@@ -1,9 +1,11 @@
 ####################################################################################
 #######    object: RECLASSIFY SHAPEFILES                        ####################
-#######    Update : 2017/05/15                                  ####################
+#######    Update : 2017/09/11                                  ####################
 #######    contact: remi.dannunzio@fao.org                      ####################
 ####################################################################################
-
+rootdir <- "~/khm_ws_20170911/data/"
+setwd(rootdir)
+rootdir <- paste0(getwd(),"/")
 
 #################### READ STATISTICS AND RESEPARATE EACH DATE COMPONENT
 df <- read.table("stats_change.txt")[,1:2]
