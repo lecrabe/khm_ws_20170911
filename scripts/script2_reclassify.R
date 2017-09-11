@@ -31,7 +31,7 @@ table(df1$ipcc_class_14,df1$ipcc_class_16,useNA = "always")
 
 unique(df1[df1$ipcc_class_16!="F",]$class16)
 
-nat_forest <- c("B","D","E","Ff","Se","M","Mr")
+nat_forest <- c("B","D","E","Ff","P","Se","M","Mr")
 sec_forest <- c("Tp","Pp","Fr")
 non_forest <- c("Bt","Bu","G","Hc","Hr","R","S","W","Ws","Rp","Po")
 
