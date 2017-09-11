@@ -35,7 +35,7 @@ imgdir  <- "/media/dannunzio/hdd_remi/cambodia/"
 #################### SET PARAMETERS
 
 ## Setup the number of snippets to generate
-how_many <- 1
+how_many <- 5
 
 #### Name of the directory where your Landsat data is
 lsat_dir <- paste0(imgdir,"landsat/")
@@ -480,7 +480,7 @@ for(the_id in listodo[1:to_go]){
       col = "white", 
       border = NA)
     
-    title(main=paste0("Rapideye 2015-17",),font.main=2,cex.main=2,line=-3,adj=0.05)
+    title(main=paste0("Rapideye 2015-17"),font.main=2,cex.main=2,line=-3,adj=0.05)
   }
   
   ####################################################################
