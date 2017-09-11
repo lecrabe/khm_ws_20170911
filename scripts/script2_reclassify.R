@@ -77,9 +77,28 @@ system(sprintf("gdal_sieve.py -st %s %s %s",
                "tmp_final_chge_1416.tif",
                "tmp_sieve_final_chge_1416.tif"))
 
-#################### COMPRESS RESULTS
-system(sprintf("gdal_translate -ot byte -co COMPRESS=LZW %s %s",
+####################  CREATE A PSEUDO COLOR TABLE
+cols <- col2rgb(c("darkgreen","yellow","red","orange","lightgreen","blue"))
+
+pct <- data.frame(cbind(c(1:6),
+                        cols[1,],
+                        cols[2,],
+                        cols[3,]
+))
+
+write.table(pct,paste0("color_table.txt"),row.names = F,col.names = F,quote = F)
+
+
+################################################################################
+## Add pseudo color table to result
+system(sprintf("(echo %s) | oft-addpct.py %s %s",
+               "color_table.txt",
                "tmp_sieve_final_chge_1416.tif",
+               "tmp_pct_sieve_final_chge_1416.tif"
+))
+
+system(sprintf("gdal_translate -ot byte -co COMPRESS=LZW %s %s",
+               "tmp_pct_sieve_final_chge_1416.tif",
                "final_change_1416.tif"))
 
 #################### DELETE TEMP FILES
