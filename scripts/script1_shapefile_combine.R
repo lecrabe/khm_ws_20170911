@@ -5,8 +5,8 @@
 ####################################################################################
 
 #################### READ SHAPEFILES
-shp14 <- readOGR(dsn="FC_2014_Kampongthom_province.shp",layer = "FC_2014_Kampongthom_province" )
-shp16 <- readOGR(dsn="FC_2016_Kampongthom_province_elimi1.shp",layer = "FC_2016_Kampongthom_province_elimi1" )
+shp14 <- readOGR(dsn="FC2014_1.shp",layer = "FC2014_1" )
+shp16 <- readOGR(dsn="FC2016.shp",layer = "FC2016" )
 
 
 #################### DETERMINE EXTENT OF BOTH SHAPEFILES
@@ -22,14 +22,14 @@ names(dbf14)
 names(dbf16)
 
 table(dbf16$FC2016)
-table(dbf14$FC14_cut_h)
+table(dbf14$FC2014)
 
 
 #################### GENERATE UNIQUE POLYGON ID AND STANDARDIZE NAMES
 dbf14$polyid <- row(dbf14)[,1]
 dbf16$polyid <- row(dbf16)[,1]
 
-dbf14 <- dbf14[,c("polyid","FC14_cut_h")]
+dbf14 <- dbf14[,c("polyid","FC2014")]
 dbf16 <- dbf16[,c("polyid","FC2016")]
 
 names(dbf14) <- c("polyid_14","class14")
@@ -46,7 +46,7 @@ list_class   <- list_class[order(list_class)]
 #################### CREATE NUMERIC CODE FOR EACH CLASS
 code_class <- data.frame(cbind(list_class,1:length(list_class)))
 names(code_class) <- c("class","code")
-#write.csv(code_class,"code_class.csv",row.names = F)
+write.csv(code_class,"code_class.csv",row.names = F)
 
 #################### MERGE THESE CODES IN DBF
 dbf14 <- merge(dbf14,code_class,by.x="class14",by.y="class",all.x=T)
@@ -110,8 +110,8 @@ df$code16 <- as.numeric(substr(as.character(10000 + df$chg_code),4,5))
 
 #################### ORGANIZE AS A TRANSITION MATRIX
 tmp <- data.frame(tapply(df$pix_count*10*10/10000,df[,c("code14","code16")],sum))
-names(tmp) <- c("nodata",list_class16)
-tmp$code14 <- c("nodata",list_class14)
+names(tmp) <- c(list_class16)
+tmp$code14 <- c(list_class14)
 tmp[is.na(tmp)]<- 0
 
 #################### WHEN TRANSITIONS ARE NOT OCCURRING, FILL WITH ZEROS
@@ -141,8 +141,5 @@ rownames(matrix) <- colnames(matrix)
 #################### PLOT MATRIX WITH COLOR GRADIENTS
 matrix <- matrix/sum(matrix)
 matrix <- matrix / max(matrix)
-# matrix[matrix==0] <- NA
-corrplot(matrix, 
-         method = "color")
 
 
