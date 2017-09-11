@@ -40,8 +40,8 @@ names(dbf16) <- c("polyid_16","class16")
 
 
 #################### DETERMINE LIST OF CLASSES FOR EACH DATASET
-list_class14 <- unique(dbf14$class14)
-list_class16 <- unique(dbf16$class16)
+list_class14 <- levels(as.factor((dbf14$class14)))
+list_class16 <- levels(as.factor((dbf16$class16)))
 list_class   <- unique(list_class16,list_class14)
 list_class   <- list_class[order(list_class)]
 
