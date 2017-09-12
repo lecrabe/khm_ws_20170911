@@ -3,13 +3,23 @@
 #######    Update : 2017/09/11                                  ####################
 #######    contact: remi.dannunzio@fao.org                      ####################
 ####################################################################################
-rootdir <- "~/khm_ws_20170911/data/"
+options(stringsAsFactors = FALSE)
+
+library(raster)
+library(rgdal)
+library(rgeos)
+library(ggplot2)
+library(foreign)
+library(dplyr)
+
+
+rootdir <- "/media/dannunzio/hdd_remi/cambodia/national_data/"
 setwd(rootdir)
 rootdir <- paste0(getwd(),"/")
 
 #################### SETUP INPUT NAMES
 name_t1 <- "FC2014_1.shp"
-name_t2 <- "FC2016.shp"
+name_t2 <- "FC2016_August_31_2017_area5ha_3.shp"
 
 attr_t1 <- "FC2014"
 attr_t2 <- "FC2016"
@@ -80,7 +90,7 @@ system(sprintf("gdal_rasterize -a %s -l %s -co COMPRESS=LZW -te %s %s %s %s -tr 
                "code",
                substr(base_t1,1,nchar(base_t1)-4),
                ext@xmin,ext@ymin,ext@xmax,ext@ymax,
-               10,10,
+               30,30,
                base_t1,
                "shp_t1.tif"
 ))
