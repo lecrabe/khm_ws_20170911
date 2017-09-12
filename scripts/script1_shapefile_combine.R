@@ -90,7 +90,7 @@ system(sprintf("gdal_rasterize -a %s -l %s -co COMPRESS=LZW -te %s %s %s %s -tr 
                "code",
                substr(base_t1,1,nchar(base_t1)-4),
                ext@xmin,ext@ymin,ext@xmax,ext@ymax,
-               30,30,
+               10,10,
                base_t1,
                "shp_t1.tif"
 ))
