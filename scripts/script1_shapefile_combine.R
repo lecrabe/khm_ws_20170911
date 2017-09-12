@@ -13,13 +13,13 @@ library(foreign)
 library(dplyr)
 
 
-rootdir <- "/media/dannunzio/hdd_remi/cambodia/national_data/"
+rootdir <- "~/khm_ws_20170911/data/"
 setwd(rootdir)
 rootdir <- paste0(getwd(),"/")
 
 #################### SETUP INPUT NAMES
 name_t1 <- "FC2014_1.shp"
-name_t2 <- "FC2016_August_31_2017_area5ha_3.shp"
+name_t2 <- "FC2016.shp"
 
 attr_t1 <- "FC2014"
 attr_t2 <- "FC2016"
