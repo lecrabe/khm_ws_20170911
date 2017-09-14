@@ -1,8 +1,8 @@
 ####################################################################################################
 ####################################################################################################
-## Prepare data for time series clipping
+## Integrate revisions from final check of CE database
 ## Contact remi.dannunzio@fao.org
-## 2017/05/19 -- Cambodia
+## 2017/09/14 -- Cambodia
 ####################################################################################################
 ####################################################################################################
 options(stringsAsFactors=FALSE)
@@ -19,48 +19,15 @@ library(foreign)
 #######################################################################
 
 ## Set your working directory
-setwd("C:/Users/dannunzio/Documents/countries/cambodia/workshop_20170911/data/results_ce/")
+#setwd("C:/Users/dannunzio/Documents/countries/cambodia/workshop_20170911/data/results_ce/")
 setwd("/media/dannunzio/OSDisk/Users/dannunzio/Documents/countries/cambodia/workshop_20170911/data/results_ce/")
 
 ## Read the datafiles
-pts_results <- read.csv("results_day3/all_groups_collectedData_earthsae_aa_change_1416_CE_2017-09-12_on_130917_152246_CSV.csv")
+pts_results <- read.csv(paste0("results_day3/results_aa_cmb_2014_16_20170913.csv"))
 pts_origin  <- read.csv("results_day1/sae_design_Change_FC14_16_31_august/pts_aa_change_1416_CE_2017-09-12.csv")
 
-## Confusion matrix
-table(pts_results$map_class,pts_results$ref_class)
+## Who
 table(pts_results$operator)
-
-pts_results[pts_results$operator == "",]$operator <- "sampreap"
-
-## Check commissions and omissions
-check <- pts_results[
-    (pts_results$ref_class != pts_results$map_class)
-    ,]
-
-## See how did what
-table(pts_results$operator)#,useNA = "always")
-(table(check$operator))
-(table(pts_results$operator))#,useNA = "always")
-
-write.csv(pts_results,paste0("results_day3/results_aa_cmb_2014_16_20170913.csv"),row.names=F)
-
-table(check$operator,check$map_class)
-## Setup points to check
-out <- pts_origin[
-  pts_origin$id %in% pts_results[
-    (pts_results$ref_class != pts_results$map_class)
-    ,
-    ]$id,
-  ]
-
-## List of operators who have to check something
-list_op <- unique(check$operator)
-
-## Export as csv file
-for(op in list_op){
-  tmp <- out[out$id %in% pts_results[pts_results$operator == op,]$id,]
-  write.csv(tmp,paste0("results_day2/check_",op,"20170913.csv"),row.names=F)
-}
 
 ################# Points to check where Map and Reference say Forest VS Non Forest
 gp1_FNF <- pts_origin[
@@ -112,15 +79,28 @@ gp4_Omi <- pts_origin[
       (pts_results$ref_class %in% c("Deforestation crops") &  
          pts_results$map_class %in% c("Forest stable",
                                       "Non Forest stable"))
-      
     ,
     ]$id,
   ]
 
-#################### Export
-write.csv(gp1_FNF,paste0("results_day3/check_gp1_FNF_20170913.csv"),row.names=F)
-write.csv(gp2_DgE,paste0("results_day3/check_gp2_DgE_20170913.csv"),row.names=F)
-write.csv(gp3_Dfo,paste0("results_day3/check_gp3_Dfo_20170913.csv"),row.names=F)
-write.csv(gp4_Omi,paste0("results_day3/check_gp4_Omi_20170913.csv"),row.names=F)
+rev_gr1_FNF <- read.csv("results_day4/grp1_FNF_remilinux_collectedData_earthsae_aa_change_1416_CE_2017-09-12_on_140917_095918_CSV.csv")
+rev_gr2_DgE <- read.csv("results_day4/grp2_DgE_ALL_remilinux_collectedData_earthsae_aa_change_1416_CE_2017-09-12_on_140917_094351_CSV.csv")
+rev_gr3_Dfo <- read.csv("results_day4/grp3_Dfo_remilinux_collectedData_earthsae_aa_change_1416_CE_2017-09-12_on_140917_100241_CSV.csv")
+rev_gr4_Omi <- read.csv("results_day4/grp4_Omi_remilinux_collectedData_earthsae_aa_change_1416_CE_2017-09-12_on_140917_103146_CSV.csv")
 
-pts_results[pts_results$id == 207,]
+rev_gr1_FNF <- rev_gr1_FNF[rev_gr1_FNF$id %in% gp1_FNF$id,]
+rev_gr2_DgE <- rev_gr2_DgE[rev_gr2_DgE$id %in% gp2_DgE$id,]
+rev_gr3_Dfo <- rev_gr3_Dfo[rev_gr3_Dfo$id %in% gp3_Dfo$id,]
+rev_gr4_Omi <- rev_gr4_Omi[rev_gr4_Omi$id %in% gp4_Omi$id,]
+
+final <- pts_results
+
+final[final$id %in% gp1_FNF$id,] <- rev_gr1_FNF
+final[final$id %in% gp2_DgE$id,] <- rev_gr2_DgE
+final[final$id %in% gp3_Dfo$id,] <- rev_gr3_Dfo
+final[final$id %in% gp4_Omi$id,] <- rev_gr4_Omi
+
+table(final$map_class,final$ref_class)
+
+#################### Export
+write.csv(final,paste0("results_day4/results_aa_cmb_2014_16_20170914.csv"),row.names=F)

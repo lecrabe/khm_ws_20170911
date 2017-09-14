@@ -1,0 +1,9 @@
+"","Deforestation crops","Deforestation other","Deforestation rubber","Degradation","Enhancement","Forest stable","Management","Non Forest stable"
+"Deforestation crops",15,11,1,1,0,4,0,15
+"Deforestation other",5,21,1,0,2,8,1,20
+"Deforestation rubber",8,5,37,1,0,5,5,1
+"Degradation",4,5,2,6,1,8,1,30
+"Enhancement",4,3,0,1,0,36,0,10
+"Forest stable",2,7,0,1,0,232,0,18
+"Management",2,1,0,0,0,4,13,9
+"Non Forest stable",1,2,0,0,1,19,1,315
